@@ -1,7 +1,10 @@
+# All coding and research done by Anna Selig
+# Main Code Completed by 7/16/2024
+
 import numpy as np
 
 # define input and output (x and y)
-training_set = 'XNOR' # set to any of the below to select training dataset
+training_set = 'AND' # set to any of the below to select training dataset
 if training_set == 'AND': 
     # AND dataset 
     x = np.array([[0,1,0,1],[0,0,1,1]])
@@ -28,17 +31,12 @@ if training_set == 'XNOR':
     y = np.array([[1,0,0,1]])
 
 m = x.shape[1] # number of columns (4)
-learningrate = .37 # learning rate cannot be optimal for every single set of randomly initialized weights 
-                   # unless you use adaptive learning rate (think: adam)
-                   # .37
+learningrate = .37 # learning rate works fine for all of the values
 
-iterations = 10000
+iterations = 6000 #decreased from 10000 to 6000, still consistently learns all
 
-# np.random.seed(1) # can be un-commented to get the same set of weights and therefore same outcome every single time.
-# working seed for AND is 1, OR is 1, NAND is 3, NOR is 1, XOR is 4, XNOR is 14
-    # note that these aren't the only seeds that work. or and nor are pretty flexible and "easy" to learn
-    # so a bunch of different seeds work. Even "harder" to learn functions like XOR and XNOR will have multiple seeds that work
- 
+# for reproduceability (same results, same weights every time), can use np.random.seed(0)
+
 def initialize_params(features, hidden_size, output_size): # initializing weights
     w1 = np.random.randn(hidden_size, features)
     w2 = np.random.randn(output_size, hidden_size)
@@ -94,7 +92,7 @@ def predict(finalweights, test): # forward propagation on inputs to receive the 
     prediction = 1 if output >= 0.5 else 0
     print(f"For input {[i[0] for i in test]}, output is {prediction}")
 
-params = initialize_params(2, 2, 1) # input shape of 2, hidden layer with 2 neurons, output layer with 1 (binary classification)
+params = initialize_params(2, 4, 1) # input shape of 2, hidden layer with 4 neurons, output layer with 1 (binary classification)
 w1, w2 = params # extracting weights from the array of weights
 
 for i in range(iterations): # training for the set number of iterations
@@ -131,35 +129,47 @@ AND        OR          NAND        NOR         XOR         XNOR
 1, 1 -> 1 | 1, 1 -> 1 | 1, 1 -> 0 | 1, 1 -> 0 | 1, 1 -> 0 | 1, 1 -> 1
 '''
 
-# examples of successful final weights
+# examples of successful final weights (there's variation in the pattern of final weights that do work, but more than one works)
 '''
 AND 
-    w1: [[ 9.03681566 -4.43003342]
-        [ 0.3929085  -1.59067341]]
-    w2: [[  9.99783045 -24.37007623]]
+    w1: [[ 2.59843188  0.17453925]
+        [ 3.00352835 -7.04837167]
+        [-2.92797684  0.08256068]
+        [-5.99387477  2.06400045]]
+    w2: [[  5.90022051 -11.20499078  -5.28646416  -7.58140952]]
 
 OR 
-    w1: [[ 3.60299717  3.8094532 ]
-        [-4.35421705 -4.24539024]]
-    w2: [[  6.77110175 -16.75731215]]
+    w1: [[ 3.20914282  3.25757711]
+        [-2.99244764 -2.99603061]
+        [ 2.65496964  1.6542933 ]
+        [-3.2615063  -3.52798133]]
+    w2: [[ 5.39059148 -7.95314822  2.10360264 -9.80285155]]
 
 NAND 
-    w1: [[ 9.33405565 -4.58114562]
-        [ 0.39993752 -1.59139508]]
-    w2: [[-10.07245212  24.47689651]]
+    w1: [[-4.48539908  1.40441567]
+        [-5.40532359  1.94145166]
+        [-0.6496005   3.4009474 ]
+        [ 2.29148542 -6.07865106]]
+    w2: [[ 6.52966539  8.01987751 -6.36501548  9.15969094]]
 
 NOR 
-    w1: [[ 3.95055149  4.00879527]
-        [-4.21894159 -4.19884405]]
-    w2: [[-6.70376844 16.5785729 ]]
+    w1: [[-2.75430944 -2.97833468]
+        [ 3.24376191  3.3722118 ]
+        [ 1.71939531  0.33313436]
+        [-3.73589762 -3.67136826]]
+    w2: [[ 6.96879536 -6.55275175 -0.80221899 10.62710435]]
 
 XOR 
-    w1: [[0.85785772 0.85781279]
-        [7.55004596 7.52900852]]
-    w2: [[-31.02168063  24.3113322 ]]
+    w1: [[ 7.71800389 -3.59937036]
+        [ 5.40629864  5.42690623]
+        [-3.86583577 -4.02681265]
+        [-3.64311386  7.81035048]]
+    w2: [[-9.79647475 14.81594173 -5.39662909 -9.80688263]]
 
 XNOR 
-    w1: [[0.85744396 0.85746351]
-        [7.51518311 7.52416033]]
-    w2: [[ 30.92178227 -24.23126075]]
+    w1: [[-8.02025372  3.95063663]
+        [-4.10721323 -4.92053778]
+        [ 4.20947226  4.75645473]
+        [-3.29650273  7.42763748]]
+    w2: [[-9.94598048 13.47561805 -5.83802546 10.95161919]]
 '''
