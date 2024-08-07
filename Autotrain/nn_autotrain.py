@@ -33,7 +33,7 @@ for i in range(100):
 print(f'{success}\n\n{fail}')
 np.save('Trained_Success.npy', success)
 np.save('Trained_Fail.npy', fail)
-np.save('Trained_All.npy', np.vstack([total_success, total_fail]))
+np.savez('Trained_All.npz', total_success=total_success, total_fail=total_fail)
 
 
 # Play the system sound for an error (10x) once fails
