@@ -1,7 +1,10 @@
 import numpy as np
 
-s_arr = np.load('Trained_Success.npy', allow_pickle=True)
-f_arr = np.load('Trained_Fail.npy', allow_pickle=True)
+arr = np.load('Trained_All.npz', allow_pickle=True)
+s_arr = arr['total_success']
+f_arr = arr['total_fail']
+
+
 
 dist_s = np.empty([0,3])
 dist_f = np.empty([0,3])
